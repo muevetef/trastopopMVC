@@ -6,14 +6,16 @@ function  basePath($path = '')
 }
 
 /**
- * Carga una Vista por su nombre
+ * Carga una Vista por su nombre y recibe los datos
  * @param string $name
+ * @param array $data
  * @return void
  */
-function loadView($name)
+function loadView($name, $data = [])
 {
     $viewPath = basePath("views/$name.view.php");
     if (file_exists($viewPath)) {
+        extract($data);
         require $viewPath;
     } else {
         echo "No se encuentra la vista '$name' ";

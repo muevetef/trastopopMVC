@@ -1,10 +1,10 @@
-DROP DATABASE trastopop;
+DROP DATABASE trastopopdb;
 
-CREATE DATABASE trastopop;
+CREATE DATABASE trastopopdb;
 
-USE trastopop;
+USE trastopopdb;
 
-CREATE TABLE trastopop.users (
+CREATE TABLE users (
     id INT NOT NULL AUTO_INCREMENT,
     name VARCHAR(255) NULL,
     email VARCHAR(255) NOT NULL,
@@ -15,7 +15,7 @@ CREATE TABLE trastopop.users (
     PRIMARY KEY (`id`)
 );
 
-CREATE TABLE trastopop.trastos (
+CREATE TABLE trastos (
     id INT NOT NULL AUTO_INCREMENT,
     user_id INT NOT NULL,
     title VARCHAR(255) NOT NULL,
@@ -36,10 +36,10 @@ CREATE TABLE trastopop.trastos (
     FOREIGN KEY (user_id) REFERENCES users (id)
 );
 
-USE trastopop;
+USE trastopopdb;
 
 INSERT INTO
-    trastopop.users (
+    users (
         name,
         email,
         password,
@@ -84,7 +84,7 @@ VALUES (
 
 -- Insert seed data into trastos table
 INSERT INTO
-    trastopop.trastos (
+    trastos (
         user_id,
         title,
         description,
