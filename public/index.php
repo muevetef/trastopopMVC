@@ -1,6 +1,12 @@
 <?php
 require '../helpers.php';
+require basePath('Database.php');
+$config = require basePath('config/db.php');
 
+$db = new Database($config);
+
+
+//TODO refactorizar el router a clase
 $routes = [
     '/' => 'controllers/home.php',
     '/trastos' => 'controllers/trastos/index.php',
@@ -9,10 +15,10 @@ $routes = [
 ];
 
 $uri = $_SERVER['REQUEST_URI'];
-if(array_key_exists($uri, $routes)){
+if (array_key_exists($uri, $routes)) {
     //la ruta está definida
     require basePath($routes[$uri]);
-}else{
+} else {
     //cargamos la página de error
     require basePath($routes['404']);
 }
