@@ -1,7 +1,8 @@
-<?php require basePath('views/partials/head.php') ?>
-<?php require basePath('views/partials/navbar.php') ?>
-<?php require basePath('views/partials/showcase.php') ?>
-<?php require basePath('views/partials/top-banner.php') ?>
+<?php loadPartial('head') ?>
+<?php loadPartial('navbar') ?>
+<?php loadPartial('showcase') ?>
+<?php loadPartial('top-banner') ?>
+
 <!-- Trasto Listings -->
 <section>
     <div class="container mx-auto p-4 mt-4">
@@ -157,5 +158,5 @@
         </a>
 </section>
 
-<?php require basePath('views/partials/bottom-banner.php') ?>
-<?php require basePath('views/partials/footer.php') ?>
+<?php loadPartial('bottom-banner') ?>
+<?php loadPartial('footer') ?>
