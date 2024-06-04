@@ -5,21 +5,17 @@ $config = require basePath('config/db.php');
 
 $db = new Database($config);
 
+require basePath('Router.php');
+//Creamos un router
+$router = new Router();
+//registramos las rutas en el router
+$router->get('/', 'controllers/home.php');
+$router->get('/trastos', 'controllers/trastos/index.php');
+$router->get('/trastos/create', 'controllers/trastos/create.php');
 
-//TODO refactorizar el router a clase
-$routes = [
-    '/' => 'controllers/home.php',
-    '/trastos' => 'controllers/trastos/index.php',
-    '/trastos/create' =>  'controllers/trastos/create.php',
-    '404' => 'controllers/error/404.php'
-];
-
+//mirar la uri de la peticion http
 $uri = $_SERVER['REQUEST_URI'];
-if (array_key_exists($uri, $routes)) {
-    //la ruta está definida
-    require basePath($routes[$uri]);
-} else {
-    //cargamos la página de error
-    require basePath($routes['404']);
-}
-inspect($uri);
+//mirar el método
+$method = $_SERVER['REQUEST_METHOD'];
+
+$router->route($uri, $method);
