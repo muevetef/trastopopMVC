@@ -1,2 +1,2 @@
 <?php
-echo "crear un trasto";
+loadView('trastos/create');

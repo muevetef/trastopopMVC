@@ -1,6 +1,5 @@
 <?php loadPartial('head') ?>
 <?php loadPartial('navbar') ?>
-<?php loadPartial('showcase') ?>
 <?php loadPartial('top-banner') ?>
 
 <!-- Trasto Listings -->
@@ -152,10 +151,7 @@
                 </div>
             </div>
         </div>
-        <a href="/trastos" class="block text-xl text-center">
-            <i class="fa fa-arrow-alt-circle-right"></i>
-            Ver Todos los Trastos
-        </a>
+
 </section>
 
 <?php loadPartial('bottom-banner') ?>

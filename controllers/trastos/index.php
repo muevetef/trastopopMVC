@@ -1,2 +1,2 @@
 <?php
-echo "<h1> mostrar los trastos</h1>";
+loadView('trastos/index');
