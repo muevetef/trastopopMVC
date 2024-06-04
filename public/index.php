@@ -9,5 +9,11 @@ $routes = [
 ];
 
 $uri = $_SERVER['REQUEST_URI'];
-
+if(array_key_exists($uri, $routes)){
+    //la ruta está definida
+    require basePath($routes[$uri]);
+}else{
+    //cargamos la página de error
+    require basePath($routes['404']);
+}
 inspect($uri);
