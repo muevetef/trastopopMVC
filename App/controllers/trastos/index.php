@@ -1,10 +1,12 @@
 <?php
+use Core\Database;
+
 $config = require basePath('config/db.php');
 $db = new Database($config);
 
-$trastos = $db->query('SELECT * FROM trastos LIMIT 3')->fetchall();
+$trastos = $db->query('SELECT * FROM trastos')->fetchall();
 
 //Pasarlos a la vista home y cargar la vista
-loadView('home', [
+loadView('trastos/index', [
     'trastos' => $trastos
 ]);
