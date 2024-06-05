@@ -6,13 +6,12 @@ require basePath('Database.php');
 require basePath('Router.php');
 //Creamos un router
 $router = new Router();
-//registramos las rutas en el router
-$router->get('/', 'controllers/home.php');
-$router->get('/trastos', 'controllers/trastos/index.php');
-$router->get('/trastos/create', 'controllers/trastos/create.php');
+//traemos el archivo con las rutas
+$routes = require basePath('routes');
 
 //mirar la uri de la peticion http
-$uri = $_SERVER['REQUEST_URI'];
+$uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+
 //mirar el método
 $method = $_SERVER['REQUEST_METHOD'];
 
