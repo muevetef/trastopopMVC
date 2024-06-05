@@ -1,6 +1,12 @@
 <?php
 //registramos las rutas en el router
-$router->get('/', 'controllers/home.php');
-$router->get('/trastos', 'controllers/trastos/show.php');
-$router->get('/trastos', 'controllers/trastos/index.php');
-$router->get('/trastos/create', 'controllers/trastos/create.php');
+$router->get('/', 'HomeController@index');
+$router->get('/trastos', "TrastoController@index");
+$router->get('/trasto/create', "TrastoController@create");
+$router->get('/trasto/{id}', "TrastoController@show");
+
+
+// $router->get('/', 'controllers/home.php');
+// $router->get('/trastos', 'controllers/trastos/show.php');
+// $router->get('/trastos', 'controllers/trastos/index.php');
+// $router->get('/trastos/create', 'controllers/trastos/create.php');
