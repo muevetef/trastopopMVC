@@ -10,9 +10,7 @@
         <div class="message bg-green-100 p-3 my-3">
           This is a success message.
         </div> -->
-        <form method="POST">
-
-            <!-- <input type="hidden" name="_method" value="PUT"> -->
+        <form method="POST" action="/trasto">
             <h2 class="text-2xl font-bold mb-6 text-center text-gray-500">
                 Información del Artículo
             </h2>
@@ -23,6 +21,9 @@
                 <textarea name="description" placeholder="Descripción del Artículo" class="w-full px-4 py-2 border rounded focus:outline-none"></textarea>
             </div>
             <div class="mb-4">
+                <textarea name="details" placeholder="Detalles del Artículo" class="w-full px-4 py-2 border rounded focus:outline-none"></textarea>
+            </div>
+            <div class="mb-4">
                 <input type="text" name="price" placeholder="Precio" class="w-full px-4 py-2 border rounded focus:outline-none" />
             </div>
             <div class="mb-4">
@@ -30,6 +31,9 @@
             </div>
             <div class="mb-4">
                 <input type="text" name="category" placeholder="Categoría" class="w-full px-4 py-2 border rounded focus:outline-none" />
+            </div>
+            <div class="mb-4">
+                <input type="text" name="tags" placeholder="Etiquetas" class="w-full px-4 py-2 border rounded focus:outline-none" />
             </div>
             <h2 class="text-2xl font-bold mb-6 text-center text-gray-500">
                 Información de Contacto y Ubicación

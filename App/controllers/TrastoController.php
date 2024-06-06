@@ -29,9 +29,7 @@ class TrastoController
     {
         $trasto = $this->db->query('SELECT * FROM trastos WHERE id = :id', $params)->fetch();
         if (!$trasto) {
-            //TODO crear el ErrorController
-            //ErrorController::notFound('No se encuentra el traso');
-            loadView('error/404');
+            ErrorController::notFound('No se encuentra el trasto');
             return;
         }
         loadView('trastos/show', [
@@ -39,7 +37,8 @@ class TrastoController
         ]);
     }
 
-    function create(){
+    function create()
+    {
         loadView('trastos/create');
     }
 }
