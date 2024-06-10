@@ -187,7 +187,7 @@ class TrastoController
             $this->db->query($query, $updateTrastoData);
             //si no hay error redireccionar a /trastos
             $_SESSION['succes_message'] = 'Trasto editado correctamente';
-            redirect('/trastos');
+            redirect('/trasto/' . $trasto->id);
         }
     }
 }
