@@ -1,13 +1,17 @@
-<?php if (isset($_SESSION['succes_message'])) : ?>
+<?php
+
+use Core\Session; ?>
+
+<?php $succesmessage = Session::getFlashMessage('success_message'); ?>
+<?php if ($succesmessage !== null) : ?>
     <div class="message bg-green-100 p-3 my-3">
-        <?= $_SESSION['succes_message'] ?>
+        <?= $succesmessage ?>
     </div>
-    <?php unset($_SESSION['succes_message']) ?>
 <?php endif ?>
 
-<?php if (isset($_SESSION['error_message'])) : ?>
+<?php $errormessage = Session::getFlashMessage('error_message'); ?>
+<?php if ($errormessage !== null) : ?>
     <div class="message bg-red-100 p-3 my-3">
-        <?= $_SESSION['error_message'] ?>
+        <?= $errormessage ?>
     </div>
-    <?php unset($_SESSION['error_message']) ?>
 <?php endif ?>

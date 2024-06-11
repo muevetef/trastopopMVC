@@ -2,7 +2,9 @@
 
 namespace App\Controllers;
 
+use Core\Authorization;
 use Core\Database;
+use Core\Session;
 use Core\Validation;
 
 class TrastoController
@@ -18,7 +20,7 @@ class TrastoController
     function index()
     {
 
-        $trastos = $this->db->query('SELECT * FROM trastos')->fetchall();
+        $trastos = $this->db->query('SELECT * FROM trastos ORDER BY created_at DESC')->fetchall();
 
         //Pasarlos a la vista home y cargar la vista
         loadView('trastos/index', [
@@ -52,8 +54,7 @@ class TrastoController
         //sanitizar los valores de todos los campos
         $newTrastoData = array_map('sanitize', $newTrastoData);
 
-        $newTrastoData['user_id'] = 2; //Fake logged user
-
+        $newTrastoData['user_id'] = Session::get('user')['id'];
         //SUBIR LA IMAGEN A LA CARPETA Y GUARDAR LA RUTA
 
 
@@ -94,7 +95,8 @@ class TrastoController
             $query = "INSERT INTO trastos ($fields) VALUES ($values)";
             $this->db->query($query, $newTrastoData);
             //si no hay error redireccionar a /trastos
-            $_SESSION['succes_message'] = 'Trasto añadido correctamente';
+
+            Session::setFlashMessage('success_message', 'Trasto añadido correctamente');
             redirect('/trastos');
         }
     }
@@ -107,9 +109,16 @@ class TrastoController
             return;
         }
 
-        $this->db->query('DELETE FROM trastos WHERE id = :id', $params);
-        $_SESSION['succes_message'] = 'Trasto eliminado correctamente';
+        //Comprobar si somos el autor
+        if (!Authorization::isOwner($trasto->user_id)) {
+            //TODO mostrar un mensage de error
+            Session::setFlashMessage('error_message', 'No tienes autorización');
+            return redirect('/trasto/' . $trasto->id);
+        }
 
+        $this->db->query('DELETE FROM trastos WHERE id = :id', $params);
+
+        Session::setFlashMessage('success_message', 'Trasto eliminado correctamente');
         redirect('/trastos');
     }
 
@@ -120,7 +129,12 @@ class TrastoController
             ErrorController::notFound('No se encuentra el trasto');
             return;
         }
-
+        //Comprobar si somos el autor
+        if (!Authorization::isOwner($trasto->user_id)) {
+            //TODO mostrar un mensage de error
+            Session::setFlashMessage('error_message', 'No tienes autorización');
+            return redirect('/trasto/' . $trasto->id);
+        }
         loadView('trastos/edit', [
             'trasto' => $trasto
         ]);
@@ -134,6 +148,13 @@ class TrastoController
         if (!$trasto) {
             ErrorController::notFound('No se encuentra el trasto');
             return;
+        }
+
+        //Comprobar si somos el autor
+        if (!Authorization::isOwner($trasto->user_id)) {
+            //TODO mostrar un mensage de error
+            Session::setFlashMessage('error_message', 'No tienes autorización');
+            return redirect('/trasto/' . $trasto->id);
         }
 
         //asegurar que llegan todo los campos requeridos o válidos
@@ -186,7 +207,7 @@ class TrastoController
 
             $this->db->query($query, $updateTrastoData);
             //si no hay error redireccionar a /trastos
-            $_SESSION['succes_message'] = 'Trasto editado correctamente';
+            Session::setFlashMessage('success_message', 'Trasto editado correctamente');
             redirect('/trasto/' . $trasto->id);
         }
     }

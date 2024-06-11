@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use Core\Database;
 use Core\Validation;
+use Core\Session;
 
 class UserController
 {
@@ -96,7 +97,70 @@ class UserController
         $this->db->query('INSERT INTO users (name, email, city, state, password) 
         VALUES (:name, :email, :city, :state, :password)', $params);
 
-        //TODO auto login - iniciar session
+        redirect('/auth/login');
+    }
+
+    function logout()
+    {
+        Session::clearAll();
+
+        $params = session_get_cookie_params();
+        setcookie('PHPSESSID', '', time() - 86400, $params['path'], $params['domain']);
+        redirect('/');
+    }
+
+    function authenticate()
+    {
+        $email = $_POST['email'];
+        $password = $_POST['password'];
+
+        $errors = [];
+
+        if (!Validation::email($email)) {
+            $errors['email'] = 'Por favor ingresa un email válido';
+        }
+
+        if (!empty($errors)) {
+            loadView('users/login', [
+                'errors' => $errors,
+            ]);
+            exit;
+        }
+
+        //Mirar si el email existe y si es así comprobamos el password
+        $params = [
+            'email' => $email
+        ];
+
+        $user = $this->db->query('SELECT * FROM users WHERE email = :email', $params)->fetch();
+
+        if (!$user) {
+            $errors['email'] = "Credenciles no válidas";
+            loadView('users/login', [
+                'errors' => $errors,
+                'user' => ['email' => $email]
+            ]);
+            exit;
+        }
+
+        //Si coincide iniciamos session sinó mostramos la vista login otra vez
+        if (!password_verify($password, $user->password)) {
+            $errors['email'] = "Credenciles no válidas";
+            loadView('users/login', [
+                'errors' => $errors,
+                'user' => ['email' => $email]
+            ]);
+            exit;
+        }
+
+        Session::set('user', [
+            'id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+            'city' => $user->city,
+            'state' => $user->state,
+        ]);
+
         redirect('/');
     }
 }

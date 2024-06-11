@@ -3,12 +3,13 @@
 namespace Core;
 
 use App\Controllers\ErrorController;
+use Core\Middleware\Autorize;
 
 class Router
 {
     protected $routes = [];
 
-    function registerRoute($method, $uri, $action)
+    function registerRoute($method, $uri, $action, $middleware)
     {
         list($controller, $controllerMethod) = explode('@', $action);
 
@@ -16,7 +17,8 @@ class Router
             'method' => $method,
             'uri' => $uri,
             'controller' => $controller,
-            'controllerMethod' => $controllerMethod
+            'controllerMethod' => $controllerMethod,
+            'middleware' => $middleware
         ];
     }
 
@@ -26,9 +28,9 @@ class Router
      * @param string $controller
      * @return void
      */
-    function get($uri, $controller)
+    function get($uri, $controller, $middleware = [])
     {
-        $this->registerRoute('GET', $uri, $controller);
+        $this->registerRoute('GET', $uri, $controller, $middleware);
     }
 
     /**
@@ -37,9 +39,9 @@ class Router
      * @param string $controller
      * @return void
      */
-    function post($uri, $controller)
+    function post($uri, $controller, $middleware = [])
     {
-        $this->registerRoute('POST', $uri, $controller);
+        $this->registerRoute('POST', $uri, $controller, $middleware);
     }
 
     /**
@@ -48,9 +50,9 @@ class Router
      * @param string $controller
      * @return void
      */
-    function put($uri, $controller)
+    function put($uri, $controller, $middleware = [])
     {
-        $this->registerRoute('PUT', $uri, $controller);
+        $this->registerRoute('PUT', $uri, $controller, $middleware);
     }
 
     /**
@@ -59,9 +61,9 @@ class Router
      * @param string $controller
      * @return void
      */
-    function delete($uri, $controller)
+    function delete($uri, $controller, $middleware = [])
     {
-        $this->registerRoute('DELETE', $uri, $controller);
+        $this->registerRoute('DELETE', $uri, $controller, $middleware);
     }
 
     function getRoutes()
@@ -120,6 +122,12 @@ class Router
                 }
 
                 if ($match) {
+                    //Llamamos al middleware antes del controlador
+
+                    foreach ($route['middleware'] as $middleware) {
+                        (new Autorize())->handle($middleware);
+                    }
+
                     //Montamos la ruta del controller
                     $controller = 'App\\controllers\\' . $route['controller'];
                     $controllerMethod = $route['controllerMethod'];
